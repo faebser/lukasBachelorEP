@@ -92,11 +92,11 @@ void testApp::reloadAllConfig() {
 	geometrie.clear();
 	retina.clear();
 	
-	mainColor = ofColor_(config["mainColor"].asString());
+	mainColor = ofColor(config["mainColor"]["r"].asInt(), config["mainColor"]["g"].asInt(), config["mainColor"]["b"].asInt());
 	Json::Value jsonColors = config["colors"];
 	int length = jsonColors.size();
 	for(int i = 0; i < length; ++i) {
-		colors.push_back(ofColor(jsonColors[i].asString()));
+		colors.push_back(ofColor(jsonColors[i]["r"].asInt(), jsonColors[i]["g"].asInt(), jsonColors[i]["b"].asInt()));
 	}
  
 	mainFont.loadFont(ofToDataPath("LTe50186.ttf"), config["mainFont"]["size"].asInt(), true, true, true);

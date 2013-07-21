@@ -32,7 +32,11 @@
 				"size" : 11
 			}
 	],
-	"mainColor" : "#000",
+	"mainColor" : {
+			"r" : 0,
+			"g" : 0,
+			"b" : 0,
+		},
 	"colors" : [
 			"#232323",
 			"#4C4C4C",
@@ -40,6 +44,40 @@
 			"#D8D8D8",
 			"#545454"
 		],
+	"movement" : {
+		"machinesOf" : [
+			{
+				"x" : -0.2,
+				"y" : 1
+			},
+			{
+				"x" : 0.23,
+				"y" : 0
+			}
+		],
+		"uberMorrow" : [
+			{
+				"x" : 1,
+				"y" : 0.5
+			},
+			{
+				"x" : 0,
+				"y" : 1
+			}
+		],
+		"geometrie" : [
+			{
+				"x" : 1,
+				"y" : 1
+			}
+		],
+		"retina" : [
+			{
+				"x" : 1,
+				"y" : 1
+			}
+		]
+	},
 	"text" : {
 		"machinesOf" : [
 			"These manipulatory machines",

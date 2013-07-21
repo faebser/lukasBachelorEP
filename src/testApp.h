@@ -24,6 +24,10 @@ class testApp : public ofBaseApp {
 		void gotMessage(ofMessage msg);
 		
 		void reloadAllConfig();
+		void newPair(int index);
+		
+		std::string getRandomStringFromTrack(std::string name);
+		ofVec2f getRandomMovementFromTrack(std::string name);
 		
 		ofTrueTypeFont mainFont;
 		std::vector<ofTrueTypeFont> fonts;
@@ -33,9 +37,14 @@ class testApp : public ofBaseApp {
 		Json::Value config;
 		ofFile jsonFile;
 		
-		std::vector<fab::Word> words;
+		std::vector<fab::Line> leftLines, rightLines;
+		std::string leftString, rightString;
 		
 		std::vector<std::string> machinesOf, uberMorrow, geometrie, retina;
+		std::vector<ofVec2f> movMachinesOf, movUberMorrow, movGeometrie, movRetina;
+		
+		int amountOfLines = 200; // put into json
+		float timeToLife = 5;
 		
 		const float inchToCmScale = 2.54;
 		
@@ -47,7 +56,5 @@ class testApp : public ofBaseApp {
 		
 		float virtualHeight; // height in pixels of the output-PDF
 		float virtualWidth; // width in pixels of ouput PDF
-		
-	private:
 		
 };

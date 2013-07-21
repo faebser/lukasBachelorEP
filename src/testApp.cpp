@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	mainFont.loadFont(ofToDataPath("LTe50186.ttf"), 40, true, true, true);
 	jsonFile.open(ofToDataPath("config.json"));
 	
 	ofBackground(255, 255, 255);
@@ -20,10 +19,16 @@ void testApp::setup(){
 		cout << "parsing successful!" << endl;
 		reloadAllConfig();
 	}
+	
+	// get first pair
+	// push all the lines into the left and right stuff
+	// draw them
+	newPair(0);
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void testApp::update() {
+	
 }
 
 //--------------------------------------------------------------
@@ -96,6 +101,7 @@ void testApp::reloadAllConfig() {
 	Json::Value jsonColors = config["colors"];
 	int length = jsonColors.size();
 	for(int i = 0; i < length; ++i) {
+		//cout << "r " << jsonColors[i]["r"].asInt() /*<< " / g " << jsonColors[i]["g"].asInt() << " / b " << jsonColors[i]["b"].asInt()*/ << endl;
 		colors.push_back(ofColor(jsonColors[i]["r"].asInt(), jsonColors[i]["g"].asInt(), jsonColors[i]["b"].asInt()));
 	}
  
@@ -103,7 +109,10 @@ void testApp::reloadAllConfig() {
 	Json::Value jsonFonts = config["fonts"];
 	length = jsonFonts.size();
 	for(int i = 0; i < length; ++i) {
-		fonts.at(i).loadFont(ofToDataPath("LTe50186.ttf"), jsonFonts[i]["size"].asInt(), true, true, true);
+		//cout << jsonFonts[i]["size"].asInt() << endl;
+		ofTrueTypeFont newFont;
+		newFont.loadFont(ofToDataPath("LTe50186.ttf"), jsonFonts[i]["size"].asInt(), true, true, true);
+		fonts.push_back(newFont);
 	}
 	
 	cout << "putting all the strings into the lists" << endl;
@@ -136,5 +145,118 @@ void testApp::reloadAllConfig() {
 		retina.push_back(stringsForRetina[i].asString());
 	}
 	
+	cout << "getting all the movement data" << endl;
+	
+	Json::Value movement = config["movement"];
+	float scale = movement["scale"].asFloat();
+	
+	Json::Value movForRetina = config["movement"]["retina"];
+	length = movForRetina.size();
+	cout << "adding " << length << " vectors to retina" << endl;
+	for(int i = 0; i < length; ++i) {
+		movRetina.push_back(ofVec2f(movForRetina[i]["x"].asFloat() * scale, movForRetina[i]["y"].asFloat() * scale));
+	}
+	
+	Json::Value movForMachinesOf = config["movement"]["machinesOf"];
+	length = movForMachinesOf.size();
+	cout << "adding " << length << " vectors to machinesOf" << endl;
+	for(int i = 0; i < length; ++i) {
+		movMachinesOf.push_back(ofVec2f(movForMachinesOf[i]["x"].asFloat() * scale, movForMachinesOf[i]["y"].asFloat() * scale));
+	}
+	
+	Json::Value movForUberMorrow = config["movement"]["uberMorrow"];
+	length = movForUberMorrow.size();
+	cout << "adding " << length << " vectors to uberMorrow" << endl;
+	for(int i = 0; i < length; ++i) {
+		movUberMorrow.push_back(ofVec2f(movForUberMorrow[i]["x"].asFloat() * scale, movForUberMorrow[i]["y"].asFloat() * scale));
+	}
+	
+	Json::Value movForGeometrie = config["movement"]["geometrie"];
+	length = movForGeometrie.size();
+	cout << "adding " << length << " vectors to geometrie" << endl;
+	for(int i = 0; i < length; ++i) {
+		movGeometrie.push_back(ofVec2f(movForGeometrie[i]["x"].asFloat() * scale, movForGeometrie[i]["y"].asFloat() * scale));
+	}
+	
 	cout << "reloading config finished" << endl;
+}
+void testApp::newPair(int index) {
+	cout << "getting pair at index: " << index << endl;
+	Json::Value pair = config["pairs"][index];
+	leftString = pair["left"].asString();
+	rightString = pair["right"].asString();
+	leftLines.clear();
+	rightLines.clear();
+	ofVec2f leftPos = ofVec2f(0, 0);
+	ofVec2f rightPos = ofVec2f(ofGetWindowWidth(), 0);
+	ofVec2f stepper = ofVec2f(0, ofGetWindowHeight() / amountOfLines);
+	
+	for(int i = 0; i < amountOfLines; ++i) {
+		// add line to left-side
+		fab::Line newLeftline = fab::Line();
+		newLeftline.SetPos(leftPos);
+		newLeftline.SetDirection(fab::Line::LEFTTORIGHT);
+		float ttl = 0;
+		while(ttl <= timeToLife) {
+			cout << "adding: " << getRandomStringFromTrack(leftString) << endl;
+			fab::Word newWord = fab::Word(leftPos + getRandomMovementFromTrack(leftString), getRandomStringFromTrack(leftString));
+			// add random color and fontsize
+			newLeftline.addNewWord(newWord);
+			ttl += ofRandom(0.75f);
+		}
+		leftLines.push_back(newLeftline);
+		leftPos += stepper;
+		leftPos.set(0, leftPos.y);
+		
+		// add line to right side
+		fab::Line newRightLine = fab::Line();
+		newRightLine.SetPos(rightPos);
+		newRightLine.SetDirection(fab::Line::RIGHTTOLEFT);
+		ttl = 0;
+		while(ttl <= timeToLife) {
+			fab::Word newWord = fab::Word(rightPos + getRandomMovementFromTrack(rightString), getRandomStringFromTrack(rightString)); // add calculation for new word-length
+			// add random color and fontsize
+			newRightLine.addNewWord(newWord);
+			ttl += ofRandom(0.75f);
+		}
+		rightLines.push_back(newRightLine);
+		rightPos += stepper;
+		rightPos.set(ofGetWindowWidth(), rightPos.y);
+	}
+}
+std::string testApp::getRandomStringFromTrack(std::string name) {
+	if(name.compare("machinesOf")) {
+		int randomIndex = (int)floor(ofRandom(machinesOf.size()));
+		return machinesOf.at(randomIndex);
+	}
+	else if(name.compare("uberMorrow")) {
+		int randomIndex = (int)floor(ofRandom(uberMorrow.size()));
+		return uberMorrow.at(randomIndex);
+	}
+	else if(name.compare("geometrie")) {
+		int randomIndex = (int)floor(ofRandom(geometrie.size()));
+		return geometrie.at(randomIndex);
+	}
+	else if(name.compare("retina")) {
+		int randomIndex = (int)floor(ofRandom(retina.size()));
+		return retina.at(randomIndex);
+	}
+}
+ofVec2f testApp::getRandomMovementFromTrack(std::string name) {
+	if(name.compare("machinesOf")) {
+		int randomIndex = (int)floor(ofRandom(movMachinesOf.size()));
+		return movMachinesOf.at(randomIndex);
+	}
+	else if(name.compare("uberMorrow")) {
+		int randomIndex = (int)floor(ofRandom(movUberMorrow.size()));
+		return movUberMorrow.at(randomIndex);
+	}
+	else if(name.compare("geometrie")) {
+		int randomIndex = (int)floor(ofRandom(movGeometrie.size()));
+		return movGeometrie.at(randomIndex);
+	}
+	else if(name.compare("retina")) {
+		int randomIndex = (int)floor(ofRandom(movRetina.size()));
+		return movRetina.at(randomIndex);
+	}
 }

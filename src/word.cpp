@@ -14,3 +14,6 @@ Word::~Word()
 
 }
 
+fab::Word::Word(ofVec2f pos, std::string string)
+{
+}

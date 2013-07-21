@@ -34,7 +34,6 @@ private:
 	ofColor color;
 	ofTrueTypeFont font;
 };
-
 }
 
 #endif // WORD_H

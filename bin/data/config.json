@@ -6,16 +6,16 @@
 	},
 	"pairs" : [
 		{
-			"1" : "machinesOf",
-			"2" : "uberMorrow"
+			"left" : "machinesOf",
+			"right" : "uberMorrow"
 		},
 		{
-			"1" : "uberMorrow",
-			"2" : "geometrie"
+			"left" : "uberMorrow",
+			"right" : "geometrie"
 		},
 		{
-			"1" : "geometrie",
-			"2" : "retina"
+			"left" : "geometrie",
+			"right" : "retina"
 		}
 	],
 	"mainFont" : {
@@ -35,14 +35,29 @@
 	"mainColor" : {
 			"r" : 0,
 			"g" : 0,
-			"b" : 0,
+			"b" : 0
 		},
 	"colors" : [
-			"#232323",
-			"#4C4C4C",
-			"#636363",
-			"#D8D8D8",
-			"#545454"
+			{
+				"r" : 0,
+				"g" : 0,
+				"b" : 0
+			},
+			{
+				"r" : 0,
+				"g" : 0,
+				"b" : 0
+			},
+			{
+				"r" : 0,
+				"g" : 0,
+				"b" : 0
+			},
+			{
+				"r" : 0,
+				"g" : 0,
+				"b" : 0
+			}
 		],
 	"movement" : {
 		"scale" : 0.1,

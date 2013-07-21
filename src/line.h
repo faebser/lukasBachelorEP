@@ -19,17 +19,23 @@ public:
 	void SetPos(const ofVec2f& pos) {
 		this->pos = pos;
 	}
+	void SetDirection(int type) {
+		this->type = type;
+	};
 	void addNewWord(std::string string);
+	void addNewWord(Word word);
 	void draw();
 	~Line();
+	
+	enum Type {
+	    LEFTTORIGHT,
+	    RIGHTTOLEFT
+	};
 private:
 	ofVec2f pos;
 	std::vector<Word> words;
 	std::vector<ofTrueTypeFont> fonts;
-	enum type {
-	    LEFTTORIGHT,
-	    RIGHTTOLEFT
-	};
+	int type;
 };
 }
 

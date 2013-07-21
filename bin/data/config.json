@@ -45,6 +45,7 @@
 			"#545454"
 		],
 	"movement" : {
+		"scale" : 0.1,
 		"machinesOf" : [
 			{
 				"x" : -0.2,

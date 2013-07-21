@@ -92,35 +92,47 @@ void testApp::reloadAllConfig() {
 	geometrie.clear();
 	retina.clear();
 	
-	ofColor bla;
+	mainColor = ofColor_(config["mainColor"].asString());
+	Json::Value jsonColors = config["colors"];
+	int length = jsonColors.size();
+	for(int i = 0; i < length; ++i) {
+		colors.push_back(ofColor(jsonColors[i].asString()));
+	}
+ 
+	mainFont.loadFont(ofToDataPath("LTe50186.ttf"), config["mainFont"]["size"].asInt(), true, true, true);
+	Json::Value jsonFonts = config["fonts"];
+	length = jsonFonts.size();
+	for(int i = 0; i < length; ++i) {
+		fonts.at(i).loadFont(ofToDataPath("LTe50186.ttf"), jsonFonts[i]["size"].asInt(), true, true, true);
+	}
 	
 	cout << "putting all the strings into the lists" << endl;
 	
 	Json::Value stringsForMachinesOf = config["text"]["machinesOf"];
-	int length = stringsForMachinesOf.size();
+	length = stringsForMachinesOf.size();
 	cout << "adding " << length << " lines to machinesOf" << endl;
-	for(int i = 0; i > length; ++i) {
+	for(int i = 0; i < length; ++i) {
 		machinesOf.push_back(stringsForMachinesOf[i].asString());
 	}
 	
 	Json::Value stringsForUberMorrow = config["text"]["uberMorrow"];
 	length = stringsForUberMorrow.size();
 	cout << "adding " << length << " lines to uberMorrow" << endl;
-	for(int i = 0; i > length; ++i) {
+	for(int i = 0; i < length; ++i) {
 		uberMorrow.push_back(stringsForUberMorrow[i].asString());
 	}
 	
 	Json::Value stringsForGeometrie = config["text"]["geometrie"];
 	length = stringsForGeometrie.size();
 	cout << "adding " << length << " lines to geometrie" << endl;
-	for(int i = 0; i > length; ++i) {
+	for(int i = 0; i < length; ++i) {
 		geometrie.push_back(stringsForGeometrie[i].asString());
 	}
 	
 	Json::Value stringsForRetina = config["text"]["retina"];
 	length = stringsForRetina.size();
 	cout << "adding " << length << " lines to retina" << endl;
-	for(int i = 0; i > length; ++i) {
+	for(int i = 0; i < length; ++i) {
 		retina.push_back(stringsForRetina[i].asString());
 	}
 	

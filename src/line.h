@@ -22,12 +22,15 @@ public:
 	void SetDirection(int type) {
 		this->type = type;
 	};
+	const std::vector<Word>& GetWords() const {
+			return words;
+	}
 	void addNewWord(std::string string);
 	void addNewWord(Word word);
 	void draw();
 	void drawPDF();
 	~Line();
-	
+
 	enum Type {
 	    LEFTTORIGHT,
 	    RIGHTTOLEFT

@@ -50,6 +50,8 @@ class testApp : public ofBaseApp {
 		
 		const float inchToCmScale = 2.54;
 		
+		bool pdfTest = false;
+		
 		// calculate the size
 		// 1 inch = 2.54 centimeters
 		float printHeight; // size in cm

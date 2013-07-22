@@ -5,7 +5,7 @@ void testApp::setup(){
 	jsonFile.open(ofToDataPath("config.json"));
 	
 	ofBackground(255, 255, 255);
-	ofSetColor(0);
+	ofSetVerticalSync(true);
 	
 	bool parsingSuccessful = reader.parse( jsonFile, config );
 	if ( !parsingSuccessful )
@@ -33,21 +33,57 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	int leftSize = leftLines.size();
-	for(int i = 0; i < leftSize; ++i) {
-		leftLines.at(i).draw();
+	ofSetColor(mainColor);
+	if(pdfTest == false) {
+		int leftSize = leftLines.size();
+		for(int i = 0; i < leftSize; ++i) {
+			leftLines.at(i).draw();
+		}
+		
+		int rightSize = rightLines.size();
+		for(int i = 0; i < rightSize; ++ i) {
+			rightLines.at(i).draw();
+		}
+		
+		//mainFont.drawStringAsShapes("hello World", 100, 100);
+	}
+	else if(pdfTest == true) {
+		ofBeginSaveScreenAsPDF("screenshot-"+ofGetTimestampString()+".pdf", false);
+		
+		ofSetColor(mainColor);
+		
+		int leftSize = leftLines.size();
+		for(int i = 0; i < leftSize; ++i) {
+			std::vector<fab::Word> words = leftLines.at(i).GetWords();
+			int wordsSize = words.size();
+			for(int j = 0; j < wordsSize; ++j) {
+				fab::Word currentWord = words.at(j);
+				ofVec2f pos = currentWord.GetPos();
+				//mainFont.drawStringAsShapes(currentWord.GetString(), pos.x, pos.y);
+			}
+			//leftLines.at(i).drawPDF();
+		}
+		
+		int rightSize = rightLines.size();
+		for(int i = 0; i < rightSize; ++ i) {
+			//rightLines.at(i).drawPDF();
+		}
+		
+		mainFont.drawStringAsShapes("hello World äüöäüöäüöäääüöäüpööp", 100, 100);
+		
+		ofEndSaveScreenAsPDF();
+		pdfTest = false;
 	}
 	
-	int rightSize = rightLines.size();
-	for(int i = 0; i < rightSize; ++ i) {
-		rightLines.at(i).draw();
-	}
-	mainFont.drawString("hello World", 100, 100);
+	
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-
+	
+	if(key == 'p') {
+		pdfTest = true;
+	}
 }
 
 //--------------------------------------------------------------
@@ -198,7 +234,7 @@ void testApp::newPair(int index) {
 	rightLines.clear();
 	ofVec2f leftPos = ofVec2f(0, 0);
 	ofVec2f rightPos = ofVec2f(ofGetWindowWidth(), 0);
-	ofVec2f stepper = ofVec2f(0, ofGetWindowHeight() / amountOfLines);
+	ofVec2f stepper = ofVec2f(0, ofGetWindowHeight() / (amountOfLines - (amountOfLines * 0.1)));
 	
 	for(int i = 0; i < amountOfLines; ++i) {
 		// add line to left-side
@@ -213,7 +249,6 @@ void testApp::newPair(int index) {
 			ofColor currentColor = getRandomColorFromTrack(leftString);
 			fab::Word newWord = fab::Word(leftPos + getRandomMovementFromTrack(leftString), newString);
 			leftPos.x += currentFont.stringWidth(newString);
-			//leftPos.y += currentFont.stringHeight(newString);
 			newWord.SetColor(currentColor);
 			newWord.SetFont(currentFont);
 			newLeftline.addNewWord(newWord);

@@ -4,6 +4,7 @@
 #include "ofVec2f.h"
 #include "ofColor.h"
 #include "ofTrueTypeFont.h"
+#include "ofMain.h"
 
 namespace fab
 {
@@ -11,6 +12,19 @@ namespace fab
 class Word
 {
 public:
+
+	const ofColor& GetColor() const {
+		return color;
+	}
+	const ofTrueTypeFont& GetFont() const {
+		return font;
+	}
+	const ofVec2f& GetPos() const {
+		return pos;
+	}
+	const std::string& GetString() const {
+		return string;
+	}
 	Word();
 	Word(ofVec2f pos, std::string string);
 	void SetColor(const ofColor& color) {
@@ -32,7 +46,7 @@ public:
 private:
 	ofVec2f pos;
 	std::string string;
-	
+
 	ofColor color;
 	ofTrueTypeFont font;
 };

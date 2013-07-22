@@ -28,6 +28,8 @@ class testApp : public ofBaseApp {
 		
 		std::string getRandomStringFromTrack(std::string name);
 		ofVec2f getRandomMovementFromTrack(std::string name);
+		ofTrueTypeFont getRandomFontFromTrack(std::string name);
+		ofColor getRandomColorFromTrack(std::string name);
 		
 		ofTrueTypeFont mainFont;
 		std::vector<ofTrueTypeFont> fonts;
@@ -43,8 +45,8 @@ class testApp : public ofBaseApp {
 		std::vector<std::string> machinesOf, uberMorrow, geometrie, retina;
 		std::vector<ofVec2f> movMachinesOf, movUberMorrow, movGeometrie, movRetina;
 		
-		int amountOfLines = 200; // put into json
-		float timeToLife = 5;
+		int amountOfLines = 150; // put into json
+		float timeToLife = 1.46;
 		
 		const float inchToCmScale = 2.54;
 		

@@ -13,12 +13,6 @@ class Word
 public:
 	Word();
 	Word(ofVec2f pos, std::string string);
-	void draw();
-	~Word();
-
-private:
-	ofVec2f pos;
-	std::string string;
 	void SetColor(const ofColor& color) {
 		this->color = color;
 	}
@@ -31,6 +25,14 @@ private:
 	void SetString(const std::string& string) {
 		this->string = string;
 	}
+	void draw();
+	void drawPDF();
+	~Word();
+
+private:
+	ofVec2f pos;
+	std::string string;
+	
 	ofColor color;
 	ofTrueTypeFont font;
 };

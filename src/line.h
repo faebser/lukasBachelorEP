@@ -25,6 +25,7 @@ public:
 	void addNewWord(std::string string);
 	void addNewWord(Word word);
 	void draw();
+	void drawPDF();
 	~Line();
 	
 	enum Type {

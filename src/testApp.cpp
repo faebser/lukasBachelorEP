@@ -33,6 +33,15 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	int leftSize = leftLines.size();
+	for(int i = 0; i < leftSize; ++i) {
+		leftLines.at(i).draw();
+	}
+	
+	int rightSize = rightLines.size();
+	for(int i = 0; i < rightSize; ++ i) {
+		rightLines.at(i).draw();
+	}
 	mainFont.drawString("hello World", 100, 100);
 }
 
@@ -198,9 +207,15 @@ void testApp::newPair(int index) {
 		newLeftline.SetDirection(fab::Line::LEFTTORIGHT);
 		float ttl = 0;
 		while(ttl <= timeToLife) {
-			cout << "adding: " << getRandomStringFromTrack(leftString) << endl;
-			fab::Word newWord = fab::Word(leftPos + getRandomMovementFromTrack(leftString), getRandomStringFromTrack(leftString));
-			// add random color and fontsize
+			std::string newString = getRandomStringFromTrack(leftString);
+			cout << "adding string " << newString << "to left side" << endl;
+			ofTrueTypeFont currentFont = getRandomFontFromTrack(leftString);
+			ofColor currentColor = getRandomColorFromTrack(leftString);
+			fab::Word newWord = fab::Word(leftPos + getRandomMovementFromTrack(leftString), newString);
+			leftPos.x += currentFont.stringWidth(newString);
+			//leftPos.y += currentFont.stringHeight(newString);
+			newWord.SetColor(currentColor);
+			newWord.SetFont(currentFont);
 			newLeftline.addNewWord(newWord);
 			ttl += ofRandom(0.75f);
 		}
@@ -208,20 +223,29 @@ void testApp::newPair(int index) {
 		leftPos += stepper;
 		leftPos.set(0, leftPos.y);
 		
+		cout << "---------------------------" << endl;
+		
 		// add line to right side
 		fab::Line newRightLine = fab::Line();
 		newRightLine.SetPos(rightPos);
 		newRightLine.SetDirection(fab::Line::RIGHTTOLEFT);
 		ttl = 0;
 		while(ttl <= timeToLife) {
-			fab::Word newWord = fab::Word(rightPos + getRandomMovementFromTrack(rightString), getRandomStringFromTrack(rightString)); // add calculation for new word-length
-			// add random color and fontsize
+			std::string newString = getRandomStringFromTrack(rightString);
+			cout << "adding string " << newString << "to right side" << endl; 
+			ofTrueTypeFont currentFont = getRandomFontFromTrack(rightString);
+			ofColor currentColor = getRandomColorFromTrack(rightString);
+			fab::Word newWord = fab::Word(rightPos + getRandomMovementFromTrack(rightString) - currentFont.stringWidth(newString), newString); // add calculation for new word-length
+			newWord.SetColor(currentColor);
+			newWord.SetFont(currentFont);
 			newRightLine.addNewWord(newWord);
 			ttl += ofRandom(0.75f);
 		}
 		rightLines.push_back(newRightLine);
 		rightPos += stepper;
 		rightPos.set(ofGetWindowWidth(), rightPos.y);
+		
+		cout << "---------------------------" << endl;
 	}
 }
 std::string testApp::getRandomStringFromTrack(std::string name) {
@@ -241,6 +265,7 @@ std::string testApp::getRandomStringFromTrack(std::string name) {
 		int randomIndex = (int)floor(ofRandom(retina.size()));
 		return retina.at(randomIndex);
 	}
+	return "ERRORRRR";
 }
 ofVec2f testApp::getRandomMovementFromTrack(std::string name) {
 	if(name.compare("machinesOf")) {
@@ -259,4 +284,12 @@ ofVec2f testApp::getRandomMovementFromTrack(std::string name) {
 		int randomIndex = (int)floor(ofRandom(movRetina.size()));
 		return movRetina.at(randomIndex);
 	}
+	return ofVec2f(0, 0);
+}
+ofTrueTypeFont testApp::getRandomFontFromTrack(std::string name) {
+	return mainFont;
+}
+
+ofColor testApp::getRandomColorFromTrack(std::string name) {
+	return mainColor;
 }

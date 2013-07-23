@@ -2,23 +2,11 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	jsonFile.open(ofToDataPath("config.json"));
 	
 	ofBackground(255, 255, 255);
 	ofSetVerticalSync(true);
 	
-	bool parsingSuccessful = reader.parse( jsonFile, config );
-	if ( !parsingSuccessful )
-	{
-		// report to the user the failure and their locations in the document.
-		std::cout  << "Failed to parse configuration\n"
-				   << reader.getFormattedErrorMessages();
-		return;
-	}
-	else {
-		cout << "parsing successful!" << endl;
-		reloadAllConfig();
-	}
+	reloadAllConfig();
 }
 
 //--------------------------------------------------------------
@@ -70,11 +58,22 @@ void testApp::draw(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	
+	cout << key << endl;
+	
 	if(key == 'p') {
 		pdfTest = true;
 	}
 	if(key == 'r') {
 		reloadAllConfig();
+	}
+	if(key == '1') {
+		newPair(0);
+	}
+	if(key == '2') {
+		newPair(1);
+	}
+	if(key == '3') {
+		newPair(2);
 	}
 }
 
@@ -118,6 +117,20 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
 }
 void testApp::reloadAllConfig() {
+	
+	jsonFile.open(ofToDataPath("config.json"));
+	
+	bool parsingSuccessful = reader.parse( jsonFile, config );
+	if ( !parsingSuccessful )
+	{
+		// report to the user the failure and their locations in the document.
+		std::cout  << "Failed to parse configuration\n"
+				   << reader.getFormattedErrorMessages();
+		return;
+	}
+	else {
+		cout << "parsing successful!" << endl;
+	}
 	
 	cout << "reloading config" << endl;
 	
@@ -180,6 +193,7 @@ void testApp::reloadAllConfig() {
 	Json::Value stringsForGeometrie = config["text"]["geometrie"];
 	length = stringsForGeometrie.size();
 	cout << "adding " << length << " lines to geometrie" << endl;
+	cout << stringsForGeometrie << endl;
 	for(int i = 0; i < length; ++i) {
 		geometrie.push_back(stringsForGeometrie[i].asString());
 	}
@@ -247,7 +261,7 @@ void testApp::newPair(int index) {
 		float ttl = 0;
 		while(ttl <= timeToLife) {
 			std::string newString = getRandomStringFromTrack(leftString);
-			cout << "adding string " << newString << "to left side" << endl;
+			cout << "adding string / " << newString << " / to left side" << endl;
 			ofTrueTypeFont currentFont = getRandomFontFromTrack(leftString);
 			ofColor currentColor = getRandomColorFromTrack(leftString);
 			fab::Word newWord = fab::Word(leftPos + getRandomMovementFromTrack(leftString), newString);
@@ -255,7 +269,7 @@ void testApp::newPair(int index) {
 			newWord.SetColor(currentColor);
 			newWord.SetFont(currentFont);
 			newLeftline.addNewWord(newWord);
-			ttl += ofRandom(0.75f);
+			ttl += ofRandom(timeToLifeStepper);
 		}
 		leftLines.push_back(newLeftline);
 		leftPos += stepper;
@@ -270,36 +284,40 @@ void testApp::newPair(int index) {
 		ttl = 0;
 		while(ttl <= timeToLife) {
 			std::string newString = getRandomStringFromTrack(rightString);
-			cout << "adding string " << newString << "to right side" << endl; 
+			cout << "adding string /" << newString << " / to right side" << endl; 
 			ofTrueTypeFont currentFont = getRandomFontFromTrack(rightString);
 			ofColor currentColor = getRandomColorFromTrack(rightString);
-			fab::Word newWord = fab::Word(rightPos + getRandomMovementFromTrack(rightString) - currentFont.stringWidth(newString), newString); // add calculation for new word-length
+			rightPos += getRandomMovementFromTrack(rightString);
+			rightPos.x -= currentFont.stringWidth(newString);
+			fab::Word newWord = fab::Word(rightPos, newString); // 
 			newWord.SetColor(currentColor);
 			newWord.SetFont(currentFont);
 			newRightLine.addNewWord(newWord);
-			ttl += ofRandom(0.75f);
+			ttl += ofRandom(timeToLifeStepper);
 		}
 		rightLines.push_back(newRightLine);
 		rightPos += stepper;
 		rightPos.set(ofGetWindowWidth(), rightPos.y);
 		
 		cout << "---------------------------" << endl;
+		jsonFile.close();
 	}
 }
 std::string testApp::getRandomStringFromTrack(std::string name) {
-	if(name.compare("machinesOf")) {
+	
+	if(name.compare("machinesOf") == 0) {
 		int randomIndex = (int)floor(ofRandom(machinesOf.size()));
 		return machinesOf.at(randomIndex);
 	}
-	else if(name.compare("uberMorrow")) {
+	else if(name.compare("uberMorrow") == 0) {
 		int randomIndex = (int)floor(ofRandom(uberMorrow.size()));
 		return uberMorrow.at(randomIndex);
 	}
-	else if(name.compare("geometrie")) {
+	else if(name.compare("geometrie") == 0) {
 		int randomIndex = (int)floor(ofRandom(geometrie.size()));
 		return geometrie.at(randomIndex);
 	}
-	else if(name.compare("retina")) {
+	else if(name.compare("retina") == 0) {
 		int randomIndex = (int)floor(ofRandom(retina.size()));
 		return retina.at(randomIndex);
 	}

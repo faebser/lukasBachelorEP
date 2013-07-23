@@ -6,8 +6,8 @@
 	},
 	"parameters" : {
 		"fontName" : "Futura2-Normal.ttf",
-		"amountOfLines" : 150, // max 200 wegen ram
-		"timeToLife" : 2, 
+		"amountOfLines" : 150,
+		"timeToLife" : 1.4, 
 		"timeToLifeStepper" : 0.66,
 		"chanceForNotTakingMainColor" : 0.67,
 		"chanceForNotTakingMainFont" : 0.67
@@ -31,13 +31,13 @@
 	},
 	"fonts" : [
 			{
-				"size" : 20
+				"size" : 15
 			},
 			{
-				"size" : 13
+				"size" : 12
 			},
 			{
-				"size" : 11
+				"size" : 7
 			}
 	],
 	"mainColor" : {
@@ -780,10 +780,10 @@
 		],
 		"geometrie" : [
 			"Sich in der Geometrie verlieren",
-			"Wie sich zwei Menschen voneinander abgestoßen haben ",
+			"Wie sich zwei Menschen voneinander abgestossen haben ",
 			"und sich in dieser Geometrie verlieren.",
 			"Manchmal entfernen sich zwei Astronauten beim Raumspaziergang,",
-			"zwei Menschen die sich voneinander abgestoßen haben."
+			"zwei Menschen die sich voneinander abgestossen haben."
 		],
 		"retina" : [
 			"The time in the room on my retina",

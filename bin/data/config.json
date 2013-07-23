@@ -4,6 +4,14 @@
 		"width" : 300,
 		"dpi" : 300
 	},
+	"parameters" : {
+		"fontName" : "Futura2-Normal.ttf",
+		"amountOfLines" : 150, // max 200 wegen ram
+		"timeToLife" : 2, 
+		"timeToLifeStepper" : 0.66,
+		"chanceForNotTakingMainColor" : 0.67,
+		"chanceForNotTakingMainFont" : 0.67
+	},
 	"pairs" : [
 		{
 			"left" : "machinesOf",
@@ -19,7 +27,7 @@
 		}
 	],
 	"mainFont" : {
-		"size" : 14
+		"size" : 11
 	},
 	"fonts" : [
 			{
@@ -39,24 +47,24 @@
 		},
 	"colors" : [
 			{
-				"r" : 0,
+				"r" : 255,
 				"g" : 0,
 				"b" : 0
 			},
 			{
 				"r" : 0,
-				"g" : 0,
+				"g" : 255,
 				"b" : 0
 			},
 			{
 				"r" : 0,
 				"g" : 0,
-				"b" : 0
+				"b" : 255
 			},
 			{
-				"r" : 0,
-				"g" : 0,
-				"b" : 0
+				"r" : 120,
+				"g" : 120,
+				"b" : 120
 			}
 		],
 	"movement" : {

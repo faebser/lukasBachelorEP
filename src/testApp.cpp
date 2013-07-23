@@ -19,11 +19,6 @@ void testApp::setup(){
 		cout << "parsing successful!" << endl;
 		reloadAllConfig();
 	}
-	
-	// get first pair
-	// push all the lines into the left and right stuff
-	// draw them
-	newPair(0);
 }
 
 //--------------------------------------------------------------
@@ -44,10 +39,6 @@ void testApp::draw(){
 		for(int i = 0; i < rightSize; ++ i) {
 			rightLines.at(i).draw();
 		}
-		
-		//std::string bla = "hello World";
-		//ofDrawBitmapString(bla, 200, 200);
-		//mainFont.drawString("hello World", 100, 100);
 	}
 	else if(pdfTest == true) {
 		ofBeginSaveScreenAsPDF("screenshot-"+ofGetTimestampString()+".pdf", true);
@@ -60,7 +51,7 @@ void testApp::draw(){
 			int wordsSize = words.size();
 			for(int j = 0; j < wordsSize; ++j) {
 				fab::Word currentWord = words.at(j);
-				ofVec2f pos = currentWord.GetPos();
+				ofVec2f pos = currentWord.GetPos();0
 				mainFont.drawStringAsShapes(currentWord.GetString(), pos.x, pos.y);
 			}*/
 			leftLines.at(i).drawPDF();
@@ -74,8 +65,6 @@ void testApp::draw(){
 		ofEndSaveScreenAsPDF();
 		pdfTest = false;
 	}
-	
-	
 }
 
 //--------------------------------------------------------------
@@ -83,6 +72,9 @@ void testApp::keyPressed(int key){
 	
 	if(key == 'p') {
 		pdfTest = true;
+	}
+	if(key == 'r') {
+		reloadAllConfig();
 	}
 }
 
@@ -133,6 +125,14 @@ void testApp::reloadAllConfig() {
 	printWidth = config["print"]["width"].asInt();
 	dpi = config["print"]["dpi"].asInt();
 	
+	amountOfLines = config["parameters"]["amountOfLines"].asInt();
+	timeToLife = config["parameters"]["timeToLife"].asFloat();
+	timeToLifeStepper = config["parameters"]["timeToLifeStepper"].asFloat();
+	fontName = config["parameters"]["fontName"].asString();
+	chanceForNotTakingMainColor = config["parameters"]["chanceForNotTakingMainColor"].asFloat();
+	chanceForNotTakingMainFont = config["parameters"]["chanceForNotTakingMainFont"].asFloat();
+	
+	
 	virtualHeight = (printHeight * inchToCmScale) * dpi;
 	virtualWidth = (printWidth * inchToCmScale) * dpi;
 	
@@ -150,14 +150,14 @@ void testApp::reloadAllConfig() {
 		colors.push_back(ofColor(jsonColors[i]["r"].asInt(), jsonColors[i]["g"].asInt(), jsonColors[i]["b"].asInt()));
 	}
  
-	mainFont.loadFont(ofToDataPath("LTe50186.ttf"), config["mainFont"]["size"].asInt(), true, true, true);
+	mainFont.loadFont(ofToDataPath(fontName), config["mainFont"]["size"].asInt(), true, true, true, 0.3);
 	cout << "full charset " << mainFont.hasFullCharacterSet() << endl;
 	Json::Value jsonFonts = config["fonts"];
 	length = jsonFonts.size();
 	for(int i = 0; i < length; ++i) {
 		//cout << jsonFonts[i]["size"].asInt() << endl;
 		ofTrueTypeFont newFont;
-		newFont.loadFont(ofToDataPath("LTe50186.ttf"), jsonFonts[i]["size"].asInt(), true, true, false);
+		newFont.loadFont(ofToDataPath(fontName), jsonFonts[i]["size"].asInt(), true, true, true, 0.3);
 		fonts.push_back(newFont);
 	}
 	
@@ -225,6 +225,8 @@ void testApp::reloadAllConfig() {
 	}
 	
 	cout << "reloading config finished" << endl;
+	cout << "loading pair at 0" << endl;
+	newPair(0);
 }
 void testApp::newPair(int index) {
 	cout << "getting pair at index: " << index << endl;
@@ -323,9 +325,17 @@ ofVec2f testApp::getRandomMovementFromTrack(std::string name) {
 	return ofVec2f(0, 0);
 }
 ofTrueTypeFont testApp::getRandomFontFromTrack(std::string name) {
+	if(ofRandom(1) > chanceForNotTakingMainFont) {
+		int size = fonts.size();
+		return fonts.at((int)floor(ofRandom(size)));
+	}
 	return mainFont;
 }
 
 ofColor testApp::getRandomColorFromTrack(std::string name) {
+	if(ofRandom(1) > chanceForNotTakingMainColor) {
+		int size = colors.size();
+		return colors.at((int)floor(ofRandom(size)));
+	}
 	return mainColor;
 }

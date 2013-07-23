@@ -46,8 +46,12 @@ class testApp : public ofBaseApp {
 		std::vector<std::string> machinesOf, uberMorrow, geometrie, retina;
 		std::vector<ofVec2f> movMachinesOf, movUberMorrow, movGeometrie, movRetina;
 		
-		int amountOfLines = 150; // put into json
-		float timeToLife = 1.46;
+		int amountOfLines; // put into json
+		float timeToLife;
+		float timeToLifeStepper;
+		std::string fontName;
+		float chanceForNotTakingMainColor;
+		float chanceForNotTakingMainFont;
 		
 		const float inchToCmScale = 2.54;
 		

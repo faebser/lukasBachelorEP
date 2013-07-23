@@ -14,14 +14,13 @@ namespace fab
 		this->string = string;
 	}
 
-
 	void fab::Word::drawPDF() {
-		//ofSetColor(color); TODO add colors
+		ofSetColor(color);
 		font.drawStringAsShapes(string, pos.x, pos.y);
 	}
 	
 	void fab::Word::draw() {
-		//ofSetColor(color); TODO add colors
+		ofSetColor(color);
 		font.drawString(string, pos.x, pos.y);
 	}
 }

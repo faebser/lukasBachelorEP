@@ -3,6 +3,7 @@
 #include "ofMain.h"
 //#include "ofxCairo.h"
 #include "json/json.h"
+#include <FTGL/ftgl.h>
 #include "word.h"
 #include "line.h"
 

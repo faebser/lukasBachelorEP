@@ -45,31 +45,31 @@ void testApp::draw(){
 			rightLines.at(i).draw();
 		}
 		
-		//mainFont.drawStringAsShapes("hello World", 100, 100);
+		//std::string bla = "hello World";
+		//ofDrawBitmapString(bla, 200, 200);
+		//mainFont.drawString("hello World", 100, 100);
 	}
 	else if(pdfTest == true) {
-		ofBeginSaveScreenAsPDF("screenshot-"+ofGetTimestampString()+".pdf", false);
+		ofBeginSaveScreenAsPDF("screenshot-"+ofGetTimestampString()+".pdf", true);
 		
-		ofSetColor(mainColor);
+		ofSetColor(0, 0, 0);
 		
 		int leftSize = leftLines.size();
 		for(int i = 0; i < leftSize; ++i) {
-			std::vector<fab::Word> words = leftLines.at(i).GetWords();
+			/*std::vector<fab::Word> words = leftLines.at(i).GetWords();
 			int wordsSize = words.size();
 			for(int j = 0; j < wordsSize; ++j) {
 				fab::Word currentWord = words.at(j);
 				ofVec2f pos = currentWord.GetPos();
-				//mainFont.drawStringAsShapes(currentWord.GetString(), pos.x, pos.y);
-			}
-			//leftLines.at(i).drawPDF();
+				mainFont.drawStringAsShapes(currentWord.GetString(), pos.x, pos.y);
+			}*/
+			leftLines.at(i).drawPDF();
 		}
 		
 		int rightSize = rightLines.size();
 		for(int i = 0; i < rightSize; ++ i) {
-			//rightLines.at(i).drawPDF();
+			rightLines.at(i).drawPDF();
 		}
-		
-		mainFont.drawStringAsShapes("hello World äüöäüöäüöäääüöäüpööp", 100, 100);
 		
 		ofEndSaveScreenAsPDF();
 		pdfTest = false;
@@ -151,12 +151,13 @@ void testApp::reloadAllConfig() {
 	}
  
 	mainFont.loadFont(ofToDataPath("LTe50186.ttf"), config["mainFont"]["size"].asInt(), true, true, true);
+	cout << "full charset " << mainFont.hasFullCharacterSet() << endl;
 	Json::Value jsonFonts = config["fonts"];
 	length = jsonFonts.size();
 	for(int i = 0; i < length; ++i) {
 		//cout << jsonFonts[i]["size"].asInt() << endl;
 		ofTrueTypeFont newFont;
-		newFont.loadFont(ofToDataPath("LTe50186.ttf"), jsonFonts[i]["size"].asInt(), true, true, true);
+		newFont.loadFont(ofToDataPath("LTe50186.ttf"), jsonFonts[i]["size"].asInt(), true, true, false);
 		fonts.push_back(newFont);
 	}
 	

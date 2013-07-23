@@ -76,7 +76,7 @@
 # add a runtime path to search for those shared libraries, since they aren't 
 # incorporated directly into the final executable application binary.
 ################################################################################
-PROJECT_LDFLAGS=-Wl,-rpath=./libs -ljsoncpp
+PROJECT_LDFLAGS=-Wl,-rpath=./libs -ljsoncpp -lftgl
 
 ################################################################################
 # PROJECT DEFINES
@@ -104,7 +104,7 @@ PROJECT_LDFLAGS=-Wl,-rpath=./libs -ljsoncpp
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-PROJECT_CFLAGS = -I/usr/include/jsoncpp
+PROJECT_CFLAGS = -I/usr/include/jsoncpp -I/usr/include/FTGL
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS

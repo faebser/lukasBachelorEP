@@ -1,12 +1,7 @@
 {
-	"print" : {
-		"height" : 300,
-		"width" : 300,
-		"dpi" : 300
-	},
 	"parameters" : {
 		"fontName" : "Futura2-Normal.ttf",
-		"amountOfLines" : 150,
+		"amountOfLines" : 2,
 		"timeToLife" : 1.4, 
 		"timeToLifeStepper" : 0.66,
 		"chanceForNotTakingMainColor" : 0.67,

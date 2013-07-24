@@ -149,11 +149,19 @@ void testApp::reloadAllConfig() {
 	virtualHeight = (printHeight * inchToCmScale) * dpi;
 	virtualWidth = (printWidth * inchToCmScale) * dpi;
 	
-	cout << "clearing all the strings" << endl;
+	cout << "clearing all the stuff" << endl;
+	
 	machinesOf.clear();
 	uberMorrow.clear();
 	geometrie.clear();
 	retina.clear();
+	colors.clear();
+	fonts.clear();
+	movGeometrie.clear();
+	movMachinesOf.clear();
+	movRetina.clear();
+	movUberMorrow.clear();
+	
 	
 	mainColor = ofColor(config["mainColor"]["r"].asInt(), config["mainColor"]["g"].asInt(), config["mainColor"]["b"].asInt());
 	Json::Value jsonColors = config["colors"];

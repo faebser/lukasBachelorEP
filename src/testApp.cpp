@@ -201,7 +201,6 @@ void testApp::reloadAllConfig() {
 	Json::Value stringsForGeometrie = config["text"]["geometrie"];
 	length = stringsForGeometrie.size();
 	cout << "adding " << length << " lines to geometrie" << endl;
-	cout << stringsForGeometrie << endl;
 	for(int i = 0; i < length; ++i) {
 		geometrie.push_back(stringsForGeometrie[i].asString());
 	}
